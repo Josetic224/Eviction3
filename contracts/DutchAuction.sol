@@ -5,7 +5,7 @@ import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
 
 contract ReverseDutchAuctionSwap {
     bool private locked;
-
+    
     modifier noReentrant() {
         require(!locked, "No reentrancy");
         locked = true;
@@ -61,7 +61,7 @@ contract ReverseDutchAuctionSwap {
         require(tokenAddress != address(0), "Invalid token address");
 
         IERC20 token = IERC20(tokenAddress);
-
+        
         // Check allowance before transfer
         require(
             token.allowance(msg.sender, address(this)) >= tokenAmount,
@@ -104,7 +104,7 @@ contract ReverseDutchAuctionSwap {
 
     function getCurrentPrice(uint256 auctionId) public view returns (uint256) {
         require(auctionId < auctions.length, "Invalid auction ID");
-
+        
         Auction storage auction = auctions[auctionId];
         if (!auction.active || block.timestamp >= auction.startTime + auction.duration) {
             return auction.endPrice;
@@ -118,7 +118,7 @@ contract ReverseDutchAuctionSwap {
 
     function executeSwap(uint256 auctionId) external payable noReentrant {
         require(auctionId < auctions.length, "Invalid auction ID");
-
+        
         Auction storage auction = auctions[auctionId];
         require(auction.active, "Auction is not active");
         require(!auction.finalized, "Auction already finalized");
@@ -151,7 +151,7 @@ contract ReverseDutchAuctionSwap {
 
     function cancelAuction(uint256 auctionId) external {
         require(auctionId < auctions.length, "Invalid auction ID");
-
+        
         Auction storage auction = auctions[auctionId];
         require(msg.sender == auction.seller, "Only seller can cancel");
         require(auction.active, "Auction not active");
@@ -162,7 +162,7 @@ contract ReverseDutchAuctionSwap {
 
         // Return tokens to seller
         IERC20(auction.tokenAddress).transfer(auction.seller, auction.tokenAmount);
-
+        
         emit AuctionCancelled(auctionId, msg.sender);
     }
 

@@ -11,4 +11,4 @@ contract TestToken is ERC20 {
     ) ERC20(name, symbol) {
         _mint(msg.sender, initialSupply);
     }
-} 
+}

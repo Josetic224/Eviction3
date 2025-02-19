@@ -14,7 +14,7 @@ const ARBITRUM_API_KEY = vars.get("ARBITRUM_API_KEY");
 
 const config: HardhatUserConfig = {
   solidity: "0.8.28",
-  defaultNetwork: "base_sepolia", // ✅ Fixed default network
+  // defaultNetwork: "base_sepolia", // ✅ Fixed default network
   networks: {
     base_sepolia: {
       url: "https://sepolia.base.org",
